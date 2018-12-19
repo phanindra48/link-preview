@@ -44,7 +44,7 @@
       }
       var nodesToBind = typeof selector === 'string' ? document.querySelectorAll(selector) : selector;
       var host = 'linkpreview.org';
-      var API = 'http://' + host + '/preview/v1/scraper?api_key=' + API_KEY;
+      var API = 'https://' + host + '/preview/v1/scraper?api_key=' + API_KEY;
 
       tippy(nodesToBind, {
         content: INITIAL_CONTENT,
