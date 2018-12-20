@@ -9,7 +9,7 @@
   newElem.src = src;
   firstScriptElem.parentNode.insertBefore(newElem, firstScriptElem);
 
-  var styles = ".tippy-tooltip.previewer-theme{background-color:#f5f5f5;padding:0px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
+  var styles = ".placeholder-content{font-family:sans-serif;color:black;padding:4px;} .tippy-tooltip.previewer-theme{background-color:#f5f5f5;padding:0px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
   /* Create style tag to load custom css */
   tag = 'style';
   newElem = d.createElement(tag);
@@ -36,7 +36,9 @@
     },
 
     bind: function (selector) {
-      var INITIAL_CONTENT = '<i style="color:black;padding:2px;">Loading...</i>'
+      var INITIAL_CONTENT = '<i class="placeholder-content">Loading...</i>'
+      var NETWORK_ERROR = '<i class="placeholder-content">Oops... Something went wrong!</i>'
+      var TIMEOUT_ERROR = '<i class="placeholder-content">Took too long (O_o)!</i>'
 
       var state = {
         isFetching: false,
@@ -67,10 +69,16 @@
 
           fetch(url)
           .then(function (res) {
+            if (!res.ok) {
+              tip.setContent(TIMEOUT_ERROR);
+              state.isFetching = false;
+              return;
+            }
             return res.json();
           })
           .then(function (json) {
-            console.log(json);
+            if (!json) return;
+
             if (tip.state.isVisible) {
               tip.setContent(json.html);
             }
@@ -78,9 +86,12 @@
             state.isFetching = false
           })
           .catch(function (error) {
-            tip.setContent('Fetch failed. ' + e);
+            tip.setContent(NETWORK_ERROR);
             state.isFetching = false;
-          });           
+            setInterval(function() {
+              tip.hide();
+            }, 1000);
+          });
         },
         onHidden: function (tip) {
           state.canFetch = true
