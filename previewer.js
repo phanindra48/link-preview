@@ -8,8 +8,8 @@
   newElem.async = 1;
   newElem.src = src;
   firstScriptElem.parentNode.insertBefore(newElem, firstScriptElem);
-  
-  var styles = ".tippy-tooltip.previewer-theme{background-color:#f5f5f5;border:.5px solid #EFEFEF;padding:1px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
+
+  var styles = ".tippy-tooltip.previewer-theme{background-color:#f5f5f5;padding:0px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
   /* Create style tag to load custom css */
   tag = 'style';
   newElem = d.createElement(tag);
