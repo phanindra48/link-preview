@@ -30,6 +30,7 @@ window.onload = () => {
 }
 
 (or)
+
 // if you are using jquery
 $( document ).ready(() => {
   // initialize here
