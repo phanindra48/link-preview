@@ -8,6 +8,12 @@
 <script src="https://cdn.linkpreview.org/js/previewer.js"></script>
 ```
 
+### Add class to DOM element to get snippets on hover
+
+```html
+<a href="https://medium.com/personal-growth/the-most-important-skill-nobody-taught-you-9b162377ab77" class="preview_class">Link</a>
+```
+
 ### To initialize previewer add below snippet in your html
 
 ```JS
@@ -17,7 +23,7 @@
       ...
     },
     API_KEY: 'YOU_API_KEY',
-    selector: '.class_name'
+    selector: '.preview_class'
   });
 ```
 
