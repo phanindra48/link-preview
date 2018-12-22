@@ -9,7 +9,7 @@
   newElem.src = src;
   firstScriptElem.parentNode.insertBefore(newElem, firstScriptElem);
 
-  var styles = ".placeholder-content{font-family:sans-serif;color:black;padding:4px;} .tippy-tooltip.previewer-theme{background-color:#f5f5f5;padding:0px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
+  var styles = ".placeholder-content{font-size:14px;font-family:sans-serif;color:black;padding:4px;} .tippy-tooltip.previewer-theme{background-color:#f5f5f5;padding:0px}.tippy-popper[x-placement^=top] .tippy-tooltip.previewer-theme .tippy-arrow{border-top-color:#f5f5f5}.tippy-popper[x-placement^=bottom] .tippy-tooltip.previewer-theme .tippy-arrow{border-bottom-color:#f5f5f5}.tippy-popper[x-placement^=left] .tippy-tooltip.previewer-theme .tippy-arrow{border-left-color:#f5f5f5}.tippy-popper[x-placement^=right] .tippy-tooltip.previewer-theme .tippy-arrow{border-right-color:#f5f5f5;fill:#f5f5f5}.tippy-tooltip.previewer-theme .tippy-roundarrow{fill:#f5f5f5}"
   /* Create style tag to load custom css */
   tag = 'style';
   newElem = d.createElement(tag);
@@ -23,7 +23,7 @@
   if (w) {
     factory(w);
   }
-})(window, document, 'script', 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js', function (window) {
+})(window, document, 'script', 'https://cdnjs.cloudflare.com/ajax/libs/tippy.js/3.3.0/tippy.all.min.js', function (window) {
   var API_KEY = null;
 
   var previewer = {
@@ -39,6 +39,7 @@
       var INITIAL_CONTENT = '<i class="placeholder-content">Loading...</i>'
       var NETWORK_ERROR = '<i class="placeholder-content">Oops... Something went wrong!</i>'
       var TIMEOUT_ERROR = '<i class="placeholder-content">Took too long (O_o)!</i>'
+      var NO_METADATA = '<i class="placeholder-content">No metadata found</i>'
 
       var state = {
         isFetching: false,
@@ -53,8 +54,8 @@
         interactive: true,
         sticky: false,
         animateFill: false,
-        shouldPopperHideOnBlur: false,
         arrow: true,
+        delay: [200, 0],
         theme: 'previewer',
         onShow: function (tip) {
           if (state.isFetching || !state.canFetch) return
@@ -65,7 +66,7 @@
           var href = tip.reference.href;
           if (!href) return;
           var format = 'html';
-          var url = API + '&url=' + href + '&format=' + format;
+          var url = API + '&url=' + encodeURIComponent(href) + '&format=' + format;
 
           fetch(url)
           .then(function (res) {
@@ -77,10 +78,12 @@
             return res.json();
           })
           .then(function (json) {
-            if (!json) return;
+            if (json && tip.state.isVisible) {
+              content = NO_METADATA;
+              
+              if (Object.keys(json).length > 0) content = json.html;
 
-            if (tip.state.isVisible) {
-              tip.setContent(json.html);
+              tip.setContent(content);
             }
 
             state.isFetching = false
@@ -88,9 +91,6 @@
           .catch(function (error) {
             tip.setContent(NETWORK_ERROR);
             state.isFetching = false;
-            setInterval(function() {
-              tip.hide();
-            }, 1000);
           });
         },
         onHidden: function (tip) {
