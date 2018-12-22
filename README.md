@@ -5,7 +5,7 @@
 ### Add below script in `head` tag of your html file
 
 ```html
-<script src="https://s3.amazonaws.com/linkpreview.org/previewer.js"></script>
+<script src="https://cdn.linkpreview.org/js/previewer.js"></script>
 ```
 
 ### To initialize previewer add below snippet in your html
@@ -35,3 +35,13 @@ $( document ).ready(() => {
   // initialize here
 })
 ```
+
+## Supported Previews
+
+### Articles
+
+![1](./images/1.png)
+
+### Youtube / Vimeo/ Dailymotion videos are supported
+
+![Youtube](./images/3.png) ![Vimeo](./images/4.png) ![Dailymotion](./images/5.png) 
